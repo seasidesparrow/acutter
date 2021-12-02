@@ -39,22 +39,4 @@ Install this via pip (or your favourite package manager):
 
 `pip install {{ cookiecutter.project_slug }}`
 
-## Contributors ✨
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<!-- markdownlint-enable -->
-<!-- prettier-ignore-end -->
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
-
-## Credits
-
-This package was created with
-[Cookiecutter](https://github.com/audreyr/cookiecutter) and the
-[browniebroke/cookiecutter-pypackage](https://github.com/browniebroke/cookiecutter-pypackage)
-project template.

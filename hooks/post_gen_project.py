@@ -77,22 +77,6 @@ def setup_pre_commit():
     run_cmd(["pre-commit", "install"])
 
 
-def add_me_as_contributor():
-    if not check_command_exists("npx"):
-        return
-
-    # Run pre-commit install
-    run_cmd(
-        [
-            "npx",
-            "all-contributors-cli",
-            "add",
-            "{{ cookiecutter.github_username }}",
-            "code,ideas,doc",
-        ]
-    )
-
-
 def main():
     if "{{ cookiecutter.run_poetry_install }}" == "y":
         run_poetry_install()
@@ -105,10 +89,6 @@ def main():
 
     if "{{ cookiecutter.setup_pre_commit }}" == "y":
         setup_pre_commit()
-
-    if "{{ cookiecutter.add_me_as_contributor }}" == "y":
-        add_me_as_contributor()
-
 
 if __name__ == "__main__":
     main()

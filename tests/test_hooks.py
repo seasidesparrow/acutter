@@ -3,7 +3,6 @@ from subprocess import CalledProcessError
 import pytest
 
 from hooks.post_gen_project import (
-    add_me_as_contributor,
     check_command_exists,
     initial_commit,
     run_poetry_install,
@@ -104,22 +103,3 @@ def test_setup_pre_commit(mocker):
         ["pre-commit", "-h"], check=True, capture_output=True
     )
     subprocess_run.assert_any_call(["pre-commit", "install"], check=True)
-
-
-def test_add_me_as_contributor(mocker):
-    subprocess_run = mocker.patch("subprocess.run")
-
-    add_me_as_contributor()
-
-    assert subprocess_run.call_count == 2
-    subprocess_run.assert_any_call(["npx", "-h"], check=True, capture_output=True)
-    subprocess_run.assert_any_call(
-        [
-            "npx",
-            "all-contributors-cli",
-            "add",
-            "{{ cookiecutter.github_username }}",
-            "code,ideas,doc",
-        ],
-        check=True,
-    )
