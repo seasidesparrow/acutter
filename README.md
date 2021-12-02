@@ -9,6 +9,55 @@
 
 Cookiecutter template for a Python Package.
 
+## Installation
+
+In order to use `cookiecutter` you'll want to have `poetry` installed; for linux these are the steps:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+source ~/.poetry/env
+```
+
+After which you can set the project up:
+
+```bash
+poetry install
+```
+
+Poetry will create a python virtualenv inside the project `.venv` folder. To activate it:
+
+```
+poetry shell
+```
+
+And now you can start cutting cookies.
+
+## Usage
+
+```
+cookiecutter . -o /dvt/workspace
+```
+
+This will create a new python package based on the template from the current folder - and as an output folder, it will write it into `/dvt/workspace/<package-name>`. Before writing, cookiecutter will initiate series of questions that will determine details.
+
+
+## Additional Features (Github)
+
+The project can be set up with github hooks and additional goodies. In order to use that functionality, you'll need to have `gh` installed on the command line:
+
+For linux:
+
+```bash
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+sudo apt update
+sudo apt install gh
+```
+
+And after that, do `gh auth login` and follow instructions to generate/save access token.
+
+
+
 ## Features
 
 - Project for Python 3.7+.

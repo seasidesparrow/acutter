@@ -1,4 +1,3 @@
 [virtualenvs]
 create = true
-path = "."
 in-project = true
