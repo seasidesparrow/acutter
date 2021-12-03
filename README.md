@@ -15,7 +15,7 @@ In order to use `cookiecutter` you'll want to have `poetry` installed; for linux
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-source ~/.poetry/env
+source $HOME/.poetry/env
 ```
 
 After which you can set the project up:
@@ -66,7 +66,6 @@ And after that, do `gh auth login` and follow instructions to generate/save acce
 - Follows the [black] style guide with [flake8] and [isort].
 - Comes with [pre-commit] hook config for black, isort, flake8 and [pyupgrade](https://github.com/asottile/pyupgrade).
 - Style guide enforced on CI.
-- Dependencies kept up to date by [Renovate].
 - Follow to [the conventional commits][conventional-commits] specification.
 - Automated releasing using [python-semantic-release][python-semantic-release].
 - Documentation configured with Sphinx and [MyST Parser][myst].
@@ -150,11 +149,6 @@ The project assumes that the documentation will be hosted on Read the Docs and w
 
 To enable it, you might need to go [into your dashboard][rtd-dashboard] and import the project from Github. Everything else should work out of the box.
 
-### Dependencies update
-
-The project dependencies are kept up to date with [Renovate] which requires [the Github app][renovate-gh-app] to be installed.
-
-The main advantage of Renovate over Dependabot is the auto-merge option, which is configured to automatically merge minor/patch updates with all the CI checks passing. It supports a variety of package managers, including Poetry, GitHub actions and pre-commit hooks which are used by default.
 
 
 
@@ -163,8 +157,6 @@ The main advantage of Renovate over Dependabot is the auto-merge option, which i
 [flake8]: https://pypi.org/project/flake8/
 [isort]: https://pypi.org/project/isort/
 [pre-commit]: https://pre-commit.com/
-[renovate]: https://docs.renovatebot.com/
-[renovate-gh-app]: https://github.com/apps/renovate
 [conventional-commits]: https://www.conventionalcommits.org
 [python-semantic-release]: https://github.com/relekang/python-semantic-release
 [myst]: https://myst-parser.readthedocs.io

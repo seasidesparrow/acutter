@@ -23,7 +23,7 @@ packages = [
 "Changelog" = "https://{{ cookiecutter.project_slug }}.readthedocs.io/changelog.html"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 
 # Documentation Dependencies
 Sphinx = {version = "^4.0.0", optional = true}

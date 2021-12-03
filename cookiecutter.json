@@ -2,7 +2,7 @@
   "full_name": "Roman Chyla",
   "email": "roman.chyla@gmail.com",
   "github_username": "romanchyla",
-  "project_name": "{{ cookiecutter.project_name }}",
+  "project_name": "",
   "project_slug": "{{ cookiecutter.project_name | slugify }}",
   "package_name": "{{ cookiecutter.project_slug.replace('-', '_') }}",
   "project_short_description": "Python project created to explore a problem.",
