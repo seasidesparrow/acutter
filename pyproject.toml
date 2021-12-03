@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "cookiecutter-pypackage"
-version = "0.0.0"
-description = "A short module exploring problem of "
+version = "0.1.0"
+description = "Cookie cutter for exploratory projects"
 authors = ["Roman Chyla <roman.chyla@gmail.com>"]
 license = "MIT"
 
@@ -17,6 +17,7 @@ pytest = "^6"
 pyupgrade = "^2.29.1"
 pytest-mock = "^3.3.1"
 pytest-cookies = "^0.6.0"
+pre-commit = "^2.16.0"
 
 [tool.isort]
 profile = "black"

@@ -24,6 +24,7 @@ def run_poetry_install():
 def initial_commit():
     # Init local repo
     run_cmd(["git", "init"])
+    run_cmd(["git", "remote", "add", "origin", "git@github.com:{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}.git"])
     run_cmd(["git", "add", "."])
     run_cmd(["git", "commit", "-m", "'feat: initial commit'"])
 
@@ -42,11 +43,10 @@ def setup_github():
             "repo",
             "create",
             f"{github_username}/{project_slug}",
-            "-y",
             "-d",
             "{{ cookiecutter.project_short_description }}",
             "--public",
-            "--enable-wiki=false",
+            "--disable-wiki",
         ]
     )
     run_cmd(
@@ -56,6 +56,8 @@ def setup_github():
             "set",
             "PYPI_TOKEN",
             "-b'changeme'",
+            "-R",
+            f"{github_username}/{project_slug}",
         ]
     )
     run_cmd(
@@ -65,6 +67,8 @@ def setup_github():
             "set",
             "GH_PAT",
             "-b'changeme'",
+            "-R",
+            f"{github_username}/{project_slug}",
         ]
     )
 

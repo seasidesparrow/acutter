@@ -67,7 +67,7 @@ def test_setup_github(mocker):
             "-d",
             "{{ cookiecutter.project_short_description }}",
             "--public",
-            "--enable-wiki=false",
+            "--disable-wiki",
         ],
         check=True,
     )
