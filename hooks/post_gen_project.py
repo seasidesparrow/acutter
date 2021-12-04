@@ -25,7 +25,15 @@ def run_virtualenv_install():
 def initial_commit():
     # Init local repo
     run_cmd(["git", "init"])
-    run_cmd(["git", "remote", "add", "origin", "git@github.com:{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}.git"])
+    run_cmd(
+        [
+            "git",
+            "remote",
+            "add",
+            "origin",
+            "git@github.com:{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}.git",
+        ]
+    )
     run_cmd(["git", "add", "."])
     run_cmd(["git", "commit", "-m", "'feat: initial commit'"])
 
@@ -94,6 +102,7 @@ def main():
 
     if "{{ cookiecutter.setup_pre_commit }}" == "y":
         setup_pre_commit()
+
 
 if __name__ == "__main__":
     main()
