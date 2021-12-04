@@ -13,7 +13,7 @@
     "GNU General Public License v3",
     "Not open source"
   ],
-  "run_poetry_install": "n",
+  "run_virtualenv_install": "n",
   "initial_commit": "n",
   "setup_github": "n",
   "setup_pre_commit": "n",

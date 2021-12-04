@@ -130,7 +130,6 @@ To enable it, you might need to go [into your dashboard][rtd-dashboard] and impo
 
 
 
-[poetry]: https://python-poetry.org/
 [black]: https://github.com/psf/black
 [flake8]: https://pypi.org/project/flake8/
 [isort]: https://pypi.org/project/isort/

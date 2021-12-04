@@ -5,7 +5,7 @@ import pytest
 from hooks.post_gen_project import (
     check_command_exists,
     initial_commit,
-    run_poetry_install,
+    run_virtualenv_install,
     setup_github,
     setup_pre_commit,
 )
@@ -27,14 +27,14 @@ def test_check_command_exists(mocker, side_effect):
     subprocess_run.assert_any_call(["something", "-h"], check=True, capture_output=True)
 
 
-def test_run_poetry_install(mocker):
+def test_run_virtualenv_install(mocker):
     subprocess_run = mocker.patch("subprocess.run")
 
-    run_poetry_install()
+    run_virtualenv_install()
 
     assert subprocess_run.call_count == 2
-    subprocess_run.assert_any_call(["poetry", "-h"], check=True, capture_output=True)
-    subprocess_run.assert_any_call(["poetry", "install"], check=True)
+    subprocess_run.assert_any_call(["virtualenv", ".venv"], check=True, capture_output=True)
+    subprocess_run.assert_any_call(["pip", "install", ".[dev]"], check=True)
 
 
 def test_initial_commit(mocker):

@@ -14,11 +14,12 @@ def check_command_exists(cmd):
     return True
 
 
-def run_poetry_install():
-    if not check_command_exists("poetry"):
+def run_virtualenv_install():
+    if not check_command_exists("virtualenv"):
         return
 
-    run_cmd(["poetry", "install"])
+    run_cmd(["virtualenv", ".venv"])
+    run_cmd(["pip", "install", ".[dev]"])
 
 
 def initial_commit():
@@ -82,8 +83,8 @@ def setup_pre_commit():
 
 
 def main():
-    if "{{ cookiecutter.run_poetry_install }}" == "y":
-        run_poetry_install()
+    if "{{ cookiecutter.run_virtualenv_install }}" == "y":
+        run_virtualenv_install()
 
     if "{{ cookiecutter.initial_commit }}" == "y":
         initial_commit()
