@@ -2,8 +2,8 @@
 name = "{{cookiecutter.project_slug}}"
 version = "{{ cookiecutter.version }}"
 description = "{{ cookiecutter.project_short_description }}"
-authors = [{ name = "{{ cookiecutter.full_name }}", email = "<{{ cookiecutter.email }}>"}]
-license = { key = "{{ cookiecutter.open_source_license }}" }
+authors = [{ name = "{{ cookiecutter.full_name }}", email = "{{ cookiecutter.email }}"}]
+license = { text = "{{ cookiecutter.open_source_license }}" }
 readme = "README.md"
 repository = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}"
 documentation = "https://{{ cookiecutter.project_slug }}.readthedocs.io"
