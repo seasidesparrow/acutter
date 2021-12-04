@@ -42,7 +42,7 @@ def test_initial_commit(mocker):
 
     initial_commit()
 
-    assert subprocess_run.call_count == 3
+    assert subprocess_run.call_count == 4
     subprocess_run.assert_any_call(["git", "init"], check=True)
     subprocess_run.assert_any_call(["git", "add", "."], check=True)
     subprocess_run.assert_any_call(
@@ -63,7 +63,6 @@ def test_setup_github(mocker):
             "repo",
             "create",
             "{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}",
-            "-y",
             "-d",
             "{{ cookiecutter.project_short_description }}",
             "--public",
@@ -78,6 +77,8 @@ def test_setup_github(mocker):
             "set",
             "PYPI_TOKEN",
             "-b'changeme'",
+            "-R",
+            "{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}",
         ],
         check=True,
     )
@@ -88,6 +89,8 @@ def test_setup_github(mocker):
             "set",
             "GH_PAT",
             "-b'changeme'",
+            "-R",
+            "{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}",
         ],
         check=True,
     )

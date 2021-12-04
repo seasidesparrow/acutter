@@ -1,34 +1,29 @@
 # Cookiecutter PyPackage
 
-<a href="https://github.com/browniebroke/cookiecutter-pypackage/actions?query=workflow%3ACI">
-  <img src="https://img.shields.io/github/workflow/status/browniebroke/cookiecutter-pypackage/CI/main?label=Test&logo=github&style=flat-square" alt="CI Status" >
+<a href="https://github.com/romanchyla/cookiecutter-pypackage/actions?query=workflow%3ACI">
+  <img src="https://img.shields.io/github/workflow/status/romanchyla/cookiecutter-pypackage/CI/main?label=Test&logo=github&style=flat-square" alt="CI Status" >
 </a>
 <a href="https://github.com/cookiecutter/cookiecutter">
   <img src="https://img.shields.io/badge/cookiecutter-template-D4AA00.svg?style=flat-square&logo=cookiecutter" alt="Cookiecutter template badge">
 </a>
 
-Cookiecutter template for a Python Package.
+Cookiecutter template for a Python Project.
 
 ## Installation
 
-In order to use `cookiecutter` you'll want to have `poetry` installed; for linux these are the steps:
+In order to use `cookiecutter` you'll need `virtualenv`:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-source $HOME/.poetry/env
+virtualenv .venv
+source .venv/bin/activate
 ```
 
 After which you can set the project up:
 
 ```bash
-poetry install
+pip install .
 ```
 
-Poetry will create a python virtualenv inside the project `.venv` folder. To activate it:
-
-```
-poetry shell
-```
 
 And now you can start cutting cookies.
 
@@ -60,9 +55,7 @@ And after that, do `gh auth login` and follow instructions to generate/save acce
 
 ## Features
 
-- Project for Python 3.7+.
 - Testing with Pytest using Github actions.
-- Packaging powered by [poetry]
 - Follows the [black] style guide with [flake8] and [isort].
 - Comes with [pre-commit] hook config for black, isort, flake8 and [pyupgrade](https://github.com/asottile/pyupgrade).
 - Style guide enforced on CI.
@@ -76,26 +69,11 @@ And after that, do `gh auth login` and follow instructions to generate/save acce
 Generate a new project with:
 
 ```shell
-cookiecutter https://github.com/browniebroke/cookiecutter-pypackage
+cookiecutter https://github.com/romanchyla/cookiecutter-pypackage
 ```
 
 This will prompt you for a few questions and create new directory with the name you used as project slug.
 
-### Start developing
-
-The project uses [Poetry] for dependencies management and packaging. Make sure you have it installed in your development machine. To install the development dependencies in a virtual environment, type:
-
-```shell
-poetry install
-```
-
-This will also generate a `poetry.lock` file, you should track this file in version control. To execute the test suite, call pytest inside Poetry's virtual environment via `poetry run`:
-
-```shell
-poetry run pytest
-```
-
-Check out the [Poetry] documentation for more information on the available commands.
 
 ### GitHub Actions
 
