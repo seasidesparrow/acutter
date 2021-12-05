@@ -33,8 +33,7 @@ def test_run_virtualenv_install(mocker):
     run_virtualenv_install()
 
     assert subprocess_run.call_count == 2
-    subprocess_run.assert_any_call(["virtualenv", ".venv"], check=True, capture_output=True)
-    subprocess_run.assert_any_call(["pip", "install", ".[dev]"], check=True)
+    subprocess_run.assert_any_call(["virtualenv", ".venv"], check=True)
 
 
 def test_initial_commit(mocker):

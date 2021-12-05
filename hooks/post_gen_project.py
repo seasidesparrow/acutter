@@ -19,7 +19,6 @@ def run_virtualenv_install():
         return
 
     run_cmd(["virtualenv", ".venv"])
-    run_cmd(["pip", "install", ".[dev]"])
 
 
 def initial_commit():

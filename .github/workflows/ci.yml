@@ -13,7 +13,6 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.7"
           - "3.8"
           - "3.9"
         os:
@@ -39,11 +38,8 @@ jobs:
       matrix:
         script:
           - { run: pytest, dir: "" }
-          - { run: flake8, dir: "" }
+          - { run: flake8 ., dir: "cookiecutter-pypackage" }
           - { run: black --check ., dir: "" }
-          - { run: pyupgrade --py36-plus `find . -name "*.py"`, dir: "" }
-          - { run: isort -c -v ., dir: "" }
-          - { run: make html, dir: "docs" }
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -53,7 +49,5 @@ jobs:
           python-version: "3.9"
       - run: pip install .
       - run: pip install '.[dev]'
-      - run: pip build
       - name: Run ${{ matrix.script.run }}
-        working-directory: .cache/my-package/${{ matrix.script.dir }}
         run: ${{ matrix.script.run }}
