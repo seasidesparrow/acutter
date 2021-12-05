@@ -35,6 +35,7 @@ def initial_commit():
     )
     run_cmd(["git", "add", "."])
     run_cmd(["git", "commit", "-m", "'feat: initial commit'"])
+    run_cmd(["git", "branch", "-M", "main"])
 
 
 def setup_github():

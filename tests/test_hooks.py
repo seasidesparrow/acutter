@@ -23,7 +23,6 @@ def test_check_command_exists(mocker, side_effect):
 
     assert check_command_exists("something") is False
 
-    assert subprocess_run.call_count == 1
     subprocess_run.assert_any_call(["something", "-h"], check=True, capture_output=True)
 
 
@@ -32,7 +31,6 @@ def test_run_virtualenv_install(mocker):
 
     run_virtualenv_install()
 
-    assert subprocess_run.call_count == 2
     subprocess_run.assert_any_call(["virtualenv", ".venv"], check=True)
 
 
@@ -41,7 +39,6 @@ def test_initial_commit(mocker):
 
     initial_commit()
 
-    assert subprocess_run.call_count == 4
     subprocess_run.assert_any_call(["git", "init"], check=True)
     subprocess_run.assert_any_call(["git", "add", "."], check=True)
     subprocess_run.assert_any_call(
@@ -54,7 +51,6 @@ def test_setup_github(mocker):
 
     setup_github()
 
-    assert subprocess_run.call_count == 4
     subprocess_run.assert_any_call(["gh", "-h"], check=True, capture_output=True)
     subprocess_run.assert_any_call(
         [
@@ -100,7 +96,6 @@ def test_setup_pre_commit(mocker):
 
     setup_pre_commit()
 
-    assert subprocess_run.call_count == 2
     subprocess_run.assert_any_call(
         ["pre-commit", "-h"], check=True, capture_output=True
     )
