@@ -55,9 +55,10 @@ And after that, do `gh auth login` and follow instructions to generate/save acce
 
 ## Features
 
-- Testing with Pytest using Github actions.
+The newly cut project will have those:
+
+- Testing with Pytest (locally and using Github actions).
 - Follows the [black] style guide with [flake8] and [isort].
-- Comes with [pre-commit] hook config for black, isort, flake8 and [pyupgrade](https://github.com/asottile/pyupgrade).
 - Style guide enforced on CI.
 - Follow to [the conventional commits][conventional-commits] specification.
 - Automated releasing using [python-semantic-release][python-semantic-release].
