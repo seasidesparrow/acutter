@@ -1,5 +1,5 @@
 [project]
-name = "cookiecutter-pypackage"
+name = "cookiecutter-pyproject"
 version = "0.1.0"
 description = "Cookie cutter for exploratory projects"
 authors = [{ name = "Roman Chyla", email = "roman.chyla@gmail.com" }]

@@ -38,7 +38,7 @@ jobs:
       matrix:
         script:
           - { run: pytest, dir: "" }
-          - { run: flake8 ., dir: "cookiecutter-pypackage" }
+          - { run: flake8 ., dir: "cookiecutter-pyproject" }
           - { run: black --check ., dir: "" }
     runs-on: ubuntu-latest
     steps:

@@ -1,7 +1,7 @@
 # Cookiecutter PyPackage
 
-<a href="https://github.com/romanchyla/cookiecutter-pypackage/actions?query=workflow%3ACI">
-  <img src="https://img.shields.io/github/workflow/status/romanchyla/cookiecutter-pypackage/CI/main?label=Test&logo=github&style=flat-square" alt="CI Status" >
+<a href="https://github.com/romanchyla/cookiecutter-pyproject/actions?query=workflow%3ACI">
+  <img src="https://img.shields.io/github/workflow/status/romanchyla/cookiecutter-pyproject/CI/main?label=Test&logo=github&style=flat-square" alt="CI Status" >
 </a>
 <a href="https://github.com/cookiecutter/cookiecutter">
   <img src="https://img.shields.io/badge/cookiecutter-template-D4AA00.svg?style=flat-square&logo=cookiecutter" alt="Cookiecutter template badge">
@@ -70,7 +70,7 @@ The newly cut project will have those:
 Generate a new project with:
 
 ```shell
-cookiecutter https://github.com/romanchyla/cookiecutter-pypackage
+cookiecutter https://github.com/romanchyla/cookiecutter-pyproject
 ```
 
 This will prompt you for a few questions and create new directory with the name you used as project slug.
@@ -150,5 +150,5 @@ To enable it, you might need to go [into your dashboard][rtd-dashboard] and impo
 
 This package was created with
 [Cookiecutter](https://github.com/audreyr/cookiecutter) and the
-[browniebroke/cookiecutter-pypackage](https://github.com/browniebroke/cookiecutter-pypackage)
+[browniebroke/cookiecutter-pyproject](https://github.com/browniebroke/cookiecutter-pyproject)
 project template.
