@@ -5,6 +5,12 @@ def run_cmd(args, **kwargs):
     return subprocess.run(args, check=True, **kwargs)
 
 
+def run_pip(args):
+    cmd = [".venv/bin/python", "-m", "pip"]
+    cmd += args
+    run_cmd(cmd)
+
+
 def check_command_exists(cmd):
     try:
         run_cmd([cmd, "-h"], capture_output=True)
@@ -14,11 +20,15 @@ def check_command_exists(cmd):
     return True
 
 
-def run_virtualenv_install():
+def install_virtualenv():
     if not check_command_exists("virtualenv"):
         return
 
     run_cmd(["virtualenv", ".venv"])
+
+    run_pip(["install", "--upgrade", "pip", "setuptools"])
+    run_pip(["install", "-e", ".[dev]"])
+    run_pip(["install", ".[docs]"])
 
 
 def initial_commit():
@@ -30,7 +40,7 @@ def initial_commit():
             "remote",
             "add",
             "origin",
-            "git@github.com:{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}.git",
+            "git@github.com:{{ cookiecutter.github_username }}/{{ cookiecutter.project_name }}.git",
         ]
     )
     run_cmd(["git", "add", "."])
@@ -45,16 +55,17 @@ def setup_github():
 
     # Create it on Github
     github_username = "{{ cookiecutter.github_username }}"
-    project_slug = "{{ cookiecutter.project_slug }}"
+    # project_slug = "{{ cookiecutter.project_slug }}"
+    project_name = "{{ cookiecutter.project_name }}"
     run_cmd(
         [
             "gh",
             "repo",
             "create",
-            f"{github_username}/{project_slug}",
+            f"{github_username}/{project_name}",
             "-d",
             "{{ cookiecutter.project_short_description }}",
-            "--public",
+            "--{{cookiecutter.private_or_public}}",
             "--disable-wiki",
         ]
     )
@@ -66,7 +77,7 @@ def setup_github():
             "PYPI_TOKEN",
             "-b'changeme'",
             "-R",
-            f"{github_username}/{project_slug}",
+            f"{github_username}/{project_name}",
         ]
     )
     run_cmd(
@@ -77,22 +88,23 @@ def setup_github():
             "GH_PAT",
             "-b'changeme'",
             "-R",
-            f"{github_username}/{project_slug}",
+            f"{github_username}/{project_name}",
         ]
     )
 
 
 def setup_pre_commit():
-    if not check_command_exists("pre-commit"):
-        return
-
-    # Run pre-commit install
-    run_cmd(["pre-commit", "install"])
+    if check_command_exists(".venv/bin/pre-commit"):
+        # Run pre-commit install
+        run_cmd([".venv/bin/pre-commit", "install"])
+    elif check_command_exists("pre-commit"):
+        # Run pre-commit install
+        run_cmd(["pre-commit", "install"])
 
 
 def main():
     if "{{ cookiecutter.run_virtualenv_install }}" == "y":
-        run_virtualenv_install()
+        install_virtualenv()
 
     if "{{ cookiecutter.initial_commit }}" == "y":
         initial_commit()
