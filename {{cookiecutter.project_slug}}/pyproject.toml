@@ -19,7 +19,6 @@ packages = [
 ]
 
 dependencies = [
-    'cookiecutter==1.7.3',
 ]
 
 
@@ -64,6 +63,9 @@ addopts = "-v -Wdefault --cov={{ cookiecutter.package_name }}"
 [tool.isort]
 profile = "black"
 known_first_party = ["{{ cookiecutter.package_name }}", "tests"]
+
+[tool.black]
+line-length = 99 # override black's default line-length
 
 [build-system]
 requires = ["setuptools >= 58.6.0", "wheel", "flit_core >=3.2,<4"]
