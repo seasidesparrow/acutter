@@ -9,7 +9,6 @@
   </a>
 </p>
 
-
 {{ cookiecutter.project_short_description }}
 
 ## Installation
@@ -17,5 +16,3 @@
 Install this via pip (or your favourite package manager):
 
 `pip install {{ cookiecutter.project_slug }}`
-
-
