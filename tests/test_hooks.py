@@ -5,7 +5,7 @@ import pytest
 from hooks.post_gen_project import (
     check_command_exists,
     initial_commit,
-    run_virtualenv_install,
+    install_virtualenv,
     setup_github,
     setup_pre_commit,
 )
@@ -29,7 +29,7 @@ def test_check_command_exists(mocker, side_effect):
 def test_run_virtualenv_install(mocker):
     subprocess_run = mocker.patch("subprocess.run")
 
-    run_virtualenv_install()
+    install_virtualenv()
 
     subprocess_run.assert_any_call(["virtualenv", ".venv"], check=True)
 
