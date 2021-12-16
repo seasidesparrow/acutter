@@ -15,10 +15,11 @@ classifiers = [
     "Topic :: Software Development :: Libraries",
 ]
 packages = [
-    { include = "{{ cookiecutter.package_name }}" },
+    "{{ cookiecutter.package_name }}",
 ]
 
 dependencies = [
+    'click>==8.0.3'
 ]
 
 
@@ -43,6 +44,18 @@ dev = [
     'pytest-cookies==0.6.1',
     'semantic-release==0.1.0',
 ]
+
+# see setup.py for explanation of these
+[xsetup.entry_points]
+console_scripts = [
+    "run=run:cli",
+    "make=make:cli"
+]
+[xsetup]
+scripts = [
+]
+
+
 
 docs = [
     'Sphinx==4.3.1',
