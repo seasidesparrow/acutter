@@ -5,7 +5,9 @@ description = "Cookie cutter for exploratory projects"
 authors = [{ name = "Roman Chyla", email = "roman.chyla@gmail.com" }]
 
 dependencies = [
-    'cookiecutter==1.7.3',
+    'cookiecutter>=1.7.3',
+    'click==8.0.3',
+    'toml==0.10.2',
 ]
 
 
@@ -23,6 +25,7 @@ dev = [
     'coverage==6.2',
     'pytest-cov==3.0.0',
     'pytest-cookies==0.6.1',
+    'ppsetuptools==2.0.2'
 ]
 
 [tool.isort]
@@ -34,6 +37,15 @@ addopts = "-v -Wdefault"
 testpaths = "tests/"
 
 [build-system]
-requires = ["setuptools >= 58.6.0", "wheel", "flit_core >=3.2,<4"]
+requires = ["setuptools >= 58.6.0", "wheel", "flit_core >=3.2,<4", "ppsetuptools==2.0.2"]
 build-backend = "flit_core.buildapi"
 #build-backend = "setuptools.build_meta"
+
+# see setup.py for explanation of these
+[xsetup.entry_points]
+console_scripts = [
+    "rtool=rtool:cli"
+]
+[xsetup]
+scripts = [
+]
