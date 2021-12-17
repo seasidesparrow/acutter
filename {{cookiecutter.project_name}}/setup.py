@@ -41,8 +41,8 @@ def monkey(*args, **kwargs):
     print("monkey patched setuptools, going to call setup() with those kwargs:")
     print("\n".join([str(x) for x in sorted(kwargs.items())]))
 
-    # raise("To see values; for testing purposes")
     orig_setup(*args, **kwargs)
+    # raise ("To see values; for testing purposes")
 
 
 setuptools.setup = monkey
