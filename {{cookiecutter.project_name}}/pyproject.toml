@@ -49,7 +49,7 @@ dev = [
 [xsetup.entry_points]
 console_scripts = [
     "run=run:cli",
-    "make=make:cli"
+    "rtool=rtool:cli"
 ]
 [xsetup]
 scripts = [
@@ -67,7 +67,7 @@ docs = [
 [tool.semantic_release]
 branch = "main"
 version_toml = "pyproject.toml:project.version"
-version_variable = "{{ cookiecutter.package_name }}/__init__.py:__version__"
+version_variable = "{{ cookiecutter.package_name }}/version.py:__version__"
 build_command = "flit build"
 
 [tool.pytest.ini_options]

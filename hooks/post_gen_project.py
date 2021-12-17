@@ -1,4 +1,6 @@
+import os
 import subprocess
+from pathlib import Path
 
 
 def run_cmd(args, **kwargs):
@@ -103,6 +105,12 @@ def setup_pre_commit():
 
 
 def main():
+
+    package_name = "{{ cookiecutter.package_name }}"
+    init_file = os.path.join(package_name, "__init__.py")
+    if not os.path.exists(init_file):
+        Path(init_file).touch()
+
     if "{{ cookiecutter.run_virtualenv_install }}" == "y":
         install_virtualenv()
 
