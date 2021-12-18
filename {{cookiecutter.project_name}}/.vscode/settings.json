@@ -10,5 +10,6 @@
   },
   "terminal.integrated.env.linux": {
     "PYTHONPATH": ".:tests"
-  }
+  },
+  "python.analysis.extraPaths": []
 }

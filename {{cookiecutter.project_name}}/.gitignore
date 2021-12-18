@@ -144,3 +144,4 @@ cython_debug/
 workdir/
 logs/
 .docs/
+local_config

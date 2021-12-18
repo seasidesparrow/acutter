@@ -1,7 +1,9 @@
 import json
 import os
 import pprint
+import shutil
 import subprocess
+import tempfile
 
 import click
 import slugify
@@ -16,16 +18,71 @@ def cli():
 
 @cli.command()
 @click.argument("folder", type=click.Path(exists=True))
+def provision(folder):
+    """
+    Generate pyproject.toml for a repository which doesn't have it.
+    After this command was successful; you can run 'upgrade'
+    """
+
+    inputfile = os.path.join(folder, "pyproject.toml")
+    if os.path.exists(inputfile):
+        raise Exception(
+            "This repo does have pyproject.toml file. Perhaps try 'update' command?"
+            "Or delete {}".format(inputfile)
+        )
+
+    print(
+        "First, we'll generate new cookiecutter - please answer these questions"
+        "(do not worry, original repository will be unchanged"
+    )
+    # first run cookiecutter
+    templatedir = os.path.dirname(__file__)
+    tmpdir = tempfile.mkdtemp()
+    context = {
+        "initial_commit": "n",
+        "setup_github": "n",
+        "setup_pre_commit": "n",
+        "private_or_public": "private",
+        "run_virtualenv_install": "n",
+    }
+    cookiecutter(
+        templatedir,
+        no_input=False,
+        extra_context=context,
+        overwrite_if_exists=True,
+        output_dir=tmpdir,
+    )
+
+    # now grab the generated pyproject.toml and copy it
+    newtoml = os.path.join(tmpdir, "pyproject.toml")
+
+    if os.path.exists(newtoml):
+        shutil.copyfile(newtoml, inputfile)
+        print("New config written into: {}".format(inputfile))
+    else:
+        print("Process interrupted; no configuration generated")
+
+
+@cli.command()
+@click.argument("folder", type=click.Path(exists=True))
 @click.option("--dry-run", default=False)
-def update(folder, dry_run):
-    """When given path pointing to a repository (that was previously) created
-    using a cookie cutter template, it will read info off that repo and
-    regenerate the project; effectively updating the files
+def upgrade(folder, dry_run):
+    """Update repository which contains pyproject.toml
+
+    When given path pointing to a repository (that was previously) created
+    using our ookie cutter template, it will read info off that repo and
+    regenerate the project; effectively updating the files.
+
+    CAREFUL: you must manually review the changes and revert those that
+    should not be accepted: i.e. use `git checkout -- <path>` to get them back
+
     """
 
     inputfile = os.path.join(folder, "pyproject.toml")
     if not os.path.exists(inputfile):
-        raise Exception("This repo doesnt have pyproject.toml file")
+        raise Exception(
+            "This repo doesnt have pyproject.toml file. Perhaps try 'provision' command?"
+        )
 
     templatedir = os.path.dirname(__file__)
     context = get_project_context(inputfile, templatedir)
