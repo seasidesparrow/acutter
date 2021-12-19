@@ -44,8 +44,9 @@ def provision(folder):
         "setup_pre_commit": "n",
         "private_or_public": "private",
         "run_virtualenv_install": "n",
+        "project_name": os.path.basename(folder),
     }
-    cookiecutter(
+    result = cookiecutter(
         templatedir,
         no_input=False,
         extra_context=context,
@@ -54,13 +55,14 @@ def provision(folder):
     )
 
     # now grab the generated pyproject.toml and copy it
-    newtoml = os.path.join(tmpdir, "pyproject.toml")
+    newtoml = os.path.join(result, "pyproject.toml")
 
     if os.path.exists(newtoml):
         shutil.copyfile(newtoml, inputfile)
         print("New config written into: {}".format(inputfile))
     else:
         print("Process interrupted; no configuration generated")
+        print(result)
 
 
 @cli.command()
@@ -170,6 +172,6 @@ def get_project_context(inputfile, templatedir, template="cookiecutter.json"):
 if __name__ == "__main__":
     import sys
 
-    sys.argv.append("update")
-    sys.argv.append("/dvt/workspace/bitwarden/")
+    sys.argv.append("provision")
+    sys.argv.append("/dvt/workspace/rprojc/")
     cli()
