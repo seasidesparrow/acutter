@@ -7,33 +7,85 @@
   <img src="https://img.shields.io/badge/cookiecutter-template-D4AA00.svg?style=flat-square&logo=cookiecutter" alt="Cookiecutter template badge">
 </a>
 
-Cookiecutter template for a Python Project.
+Cookiecutter template for a Python Project. This is good both for libraries and applications (just delete features that you don't need).
 
-## Installation
 
-In order to use `cookiecutter` you'll need `virtualenv`:
+## Features
+
+The newly cut project will have those:
+
+- Uses `pyproject.toml`.
+- Provides automatically generated `setup.py` (to work around current tooling defficiencies).
+- Testing with Pytest (locally and using Github actions).
+- Follows the [black] style guide with [flake8] and [isort].
+- Style guide enforced on CI.
+- Follow to [the conventional commits][conventional-commits] specification.
+- Automated releasing using [python-semantic-release][python-semantic-release].
+- Documentation configured with Sphinx and [MyST Parser][myst].
+- Standardised list of GitHub labels synchronised on push to master using [the labels CLI][pylabels].
+- VSCode settings
+- When used locally: ability to upgrade/convert existing projects/libraries
+  
+
+
+## Recommended Usage
+
+Checkout the project locally, create a `virtualenv` and setup the project in a development mode (this way you can modify the code, and hopefully, submit a PR)
 
 ```bash
+git clone https://github.com/romanchyla/cookiecutter-pyproject
 virtualenv .venv
 source .venv/bin/activate
+pip install -e .
 ```
-
-After which you can set the project up:
-
-```bash
-pip install .
-```
-
-
-And now you can start cutting cookies.
 
 ## Usage
 
-```
-cookiecutter . -o /dvt/workspace
+```shell
+cookiecutter https://github.com/romanchyla/cookiecutter-pyproject
 ```
 
-This will create a new python package based on the template from the current folder - and as an output folder, it will write it into `/dvt/workspace/<package-name>`. Before writing, cookiecutter will initiate series of questions that will determine details.
+Or locally:
+
+```
+cookiecutter . -o /some/path
+```
+
+This will create a new python package based on the template from the current folder - and as an output folder, it will write it into `/some/path/<project-name>`. 
+
+Before writing, cookiecutter will initiate series of questions that will determine details.
+
+
+## Updating Cut Projects
+
+If you have created a project/library using this template, you can update it later following those steps:
+
+1. check out cookiecutter and your library into a local filesystem
+1. make sure to commit all changes in your library
+1. call `rtool update /path/to/library`
+
+We'll read settings from your library's `pyproject.toml` and generate a new template overwriting your files. So your last step is to review all changes and accept those that should stay, i.e.
+
+```shell
+cd /path/to/library
+git status
+git diff
+....
+git checkout -- README.md # to revert to the previous version
+...
+git commit -am "feat: Updated project tooling"
+```
+
+
+## Upgrading Existing Projects
+
+If you want to convert a project/library which wasn't created from the template, follow these steps:
+
+1. check out cookiecutter and your library into a local filesystem
+1. call `rtool provision /path/to/library`
+1. follow step above for updating a project
+
+
 
 
 ## Additional Features (Github)
@@ -51,29 +103,6 @@ sudo apt install gh
 
 And after that, do `gh auth login` and follow instructions to generate/save access token.
 
-
-
-## Features
-
-The newly cut project will have those:
-
-- Testing with Pytest (locally and using Github actions).
-- Follows the [black] style guide with [flake8] and [isort].
-- Style guide enforced on CI.
-- Follow to [the conventional commits][conventional-commits] specification.
-- Automated releasing using [python-semantic-release][python-semantic-release].
-- Documentation configured with Sphinx and [MyST Parser][myst].
-- Standardised list of GitHub labels synchronised on push to master using [the labels CLI][pylabels].
-
-## Usage
-
-Generate a new project with:
-
-```shell
-cookiecutter https://github.com/romanchyla/cookiecutter-pyproject
-```
-
-This will prompt you for a few questions and create new directory with the name you used as project slug.
 
 
 ### GitHub Actions

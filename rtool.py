@@ -21,7 +21,7 @@ def cli():
 def provision(folder):
     """
     Generate pyproject.toml for a repository which doesn't have it.
-    After this command was successful; you can run 'upgrade'
+    After this command was successful; you can run 'update'
     """
 
     inputfile = os.path.join(folder, "pyproject.toml")
@@ -68,7 +68,7 @@ def provision(folder):
 @cli.command()
 @click.argument("folder", type=click.Path(exists=True))
 @click.option("--dry-run", default=False)
-def upgrade(folder, dry_run):
+def update(folder, dry_run):
     """Update repository which contains pyproject.toml
 
     When given path pointing to a repository (that was previously) created

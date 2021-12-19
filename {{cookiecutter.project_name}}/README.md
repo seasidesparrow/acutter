@@ -16,3 +16,13 @@
 Install this via pip (or your favourite package manager):
 
 `pip install {{ cookiecutter.project_slug }}`
+
+
+## Generate Documentation
+
+`rtool docs`
+
+
+## Update Release
+
+`rtool update-release`
