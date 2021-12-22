@@ -90,6 +90,15 @@ def update(folder, dry_run):
     context = get_project_context(inputfile, templatedir)
     output_dir = os.path.abspath(os.path.join(folder, ".."))
 
+    basename = os.path.basename(os.path.abspath(folder))
+    if context["project_name"] != basename:
+        print(
+            "project_name differs from the location on disk; will use location: {} -> {}".format(
+                context["project_name"], basename
+            )
+        )
+        context["project_name"] = basename
+
     if not dry_run:
         cookiecutter(
             templatedir,
@@ -150,9 +159,11 @@ def get_project_context(inputfile, templatedir, template="cookiecutter.json"):
         parts = repo.rsplit("/", 2)
         out["github_username"] = parts[1]
         out["project_name"] = parts[2].replace(".git", "")
-        out["package_name"] = project.get(
-            "packages", [slugify.slugify(out["project_name"])]
-        )[0]
+        # old version of packages may read {include = []}
+        pkgs = project.get("packages", [slugify.slugify(out["project_name"])])
+        if isinstance(pkgs[0], dict):
+            pkgs = [x["include"] for x in pkgs]
+        out["package_name"] = pkgs[0]
         out["project_slug"] = out["package_name"]
 
     out["open_source_license"] = project.get(
@@ -172,6 +183,6 @@ def get_project_context(inputfile, templatedir, template="cookiecutter.json"):
 if __name__ == "__main__":
     import sys
 
-    sys.argv.append("provision")
-    sys.argv.append("/dvt/workspace/rprojc/")
+    sys.argv.append("update")
+    sys.argv.append("/dvt/workspace/CSPatterns/")
     cli()
