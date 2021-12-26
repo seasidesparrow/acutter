@@ -1,0 +1,3 @@
+- incorporate fastapi
+  - or make it a separate (derived/optional)?
+  - ex: https://github.com/tiangolo/full-stack-fastapi-postgresql
