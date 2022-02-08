@@ -32,7 +32,6 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.8"
           - "3.9"
         os:
           - ubuntu-latest
@@ -66,31 +65,4 @@ jobs:
       - run: pip install .
       - run: pip install '.[dev]'
       - name: Build docs
-        working-directory: docs
-        run: make html
-
-  release:
-    runs-on: ubuntu-latest
-    environment: release
-    if: github.ref == 'refs/heads/main'
-    needs:
-      - test
-      - lint
-      - commitlint
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      # Run semantic release:
-      # - Update CHANGELOG.md
-      # - Update version in code
-      # - Create git tag
-      # - Create Github release
-      # - Publish to PyPI
-      - name: Python Semantic Release
-        uses: relekang/python-semantic-release@v7.15.0
-        with:
-          github_token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
-          pypi_token: {% raw %}${{ secrets.PYPI_TOKEN }}{% endraw %}
+        run: python rtool.py docs
