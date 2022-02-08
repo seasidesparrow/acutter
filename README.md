@@ -9,7 +9,6 @@
 
 Cookiecutter template for a Python Project. This is good both for libraries and applications (just delete features that you don't need).
 
-
 ## Features
 
 The newly cut project will have those:
@@ -25,8 +24,6 @@ The newly cut project will have those:
 - Standardised list of GitHub labels synchronised on push to master using [the labels CLI][pylabels].
 - VSCode settings
 - When used locally: ability to upgrade/convert existing projects/libraries
-  
-
 
 ## Recommended Usage
 
@@ -51,10 +48,9 @@ Or locally:
 cookiecutter . -o /some/path
 ```
 
-This will create a new python package based on the template from the current folder - and as an output folder, it will write it into `/some/path/<project-name>`. 
+This will create a new python package based on the template from the current folder - and as an output folder, it will write it into `/some/path/<project-name>`.
 
 Before writing, cookiecutter will initiate series of questions that will determine details.
-
 
 ## Updating Cut Projects
 
@@ -76,7 +72,6 @@ git checkout -- README.md # to revert to the previous version
 git commit -am "feat: Updated project tooling"
 ```
 
-
 ## Upgrading Existing Projects
 
 If you want to convert a project/library which wasn't created from the template, follow these steps:
@@ -84,9 +79,6 @@ If you want to convert a project/library which wasn't created from the template,
 1. check out cookiecutter and your library into a local filesystem
 1. call `rtool provision /path/to/library`
 1. follow step above for updating a project
-
-
-
 
 ## Additional Features (Github)
 
@@ -102,8 +94,6 @@ sudo apt install gh
 ```
 
 And after that, do `gh auth login` and follow instructions to generate/save access token.
-
-
 
 ### GitHub Actions
 
@@ -157,9 +147,6 @@ The project assumes that the documentation will be hosted on Read the Docs and w
 
 To enable it, you might need to go [into your dashboard][rtd-dashboard] and import the project from Github. Everything else should work out of the box.
 
-
-
-
 [black]: https://github.com/psf/black
 [flake8]: https://pypi.org/project/flake8/
 [isort]: https://pypi.org/project/isort/
@@ -173,7 +160,6 @@ To enable it, you might need to go [into your dashboard][rtd-dashboard] and impo
 [pypi]: https://pypi.org/
 [create-pat]: https://github.com/settings/tokens/new?scopes=repo
 [rtd-dashboard]: https://readthedocs.org/dashboard/
-
 
 ## Credits
 

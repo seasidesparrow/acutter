@@ -2,7 +2,6 @@ import json
 import os
 import pprint
 import shutil
-import subprocess
 import tempfile
 
 import click

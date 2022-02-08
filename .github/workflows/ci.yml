@@ -29,10 +29,7 @@ jobs:
       - run: pip install .
       - run: pip install '.[dev]'
       - run: pytest
-      
-
-  # Generate project, run CI & build docs
-  cookie:
+  cookie: # Generate project, run CI & build docs
     strategy:
       fail-fast: false
       matrix:
