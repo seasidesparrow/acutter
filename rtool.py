@@ -71,7 +71,7 @@ def update(folder, dry_run):
     """Update repository which contains pyproject.toml
 
     When given path pointing to a repository (that was previously) created
-    using our ookie cutter template, it will read info off that repo and
+    using our cookie cutter template, it will read info off that repo and
     regenerate the project; effectively updating the files.
 
     CAREFUL: you must manually review the changes and revert those that
@@ -180,8 +180,4 @@ def get_project_context(inputfile, templatedir, template="cookiecutter.json"):
 
 
 if __name__ == "__main__":
-    import sys
-
-    sys.argv.append("update")
-    sys.argv.append("/dvt/workspace/CSPatterns/")
     cli()

@@ -35,7 +35,9 @@ def check_paths(paths):
             assert match is None, f"cookiecutter variable not replaced in {path}"
 
 
-def test_generate_project(cookies, base_context):
+def test_generate_project(
+    cookies, base_context
+):  # cookies is a pytest.fixture (from pytest-cookies)
     result = cookies.bake(extra_context=base_context)
 
     assert result.exit_code == 0, result.exception
@@ -50,3 +52,7 @@ def test_generate_project(cookies, base_context):
     ]
     assert paths
     check_paths(paths)
+
+
+if __name__ == "__main__":
+    pytest.main()
