@@ -1,8 +1,85 @@
-# Tutorial on how to use acutter and what to pay attention to
+# What Devs Need to Understand
 
 `acutter` is a cookie cutter template for ADS projects; both exploratory and production quality ones.
 
 This document will list things that are important for developers.
+
+## acutter
+
+
+### Installation
+
+Package: `pip install <package>`
+
+Optional dependencies: `pip install <package>.[docs]`
+
+
+### Development
+
+You **should want** to work in local development mode, it is by far the easiest for making changes.
+
+It is **strongly recommended** to use a **virtualenv** (or its cousins):
+
+```bash
+virtualenv .venv
+source .venv/bin/activate
+```
+
+Installation: `pip install -e .`
+
+This will create symbolic links to the code you are updating; all changes are automatically available.
+
+NOTE: Sometimes you have to re-do `pip install -e .` after you have run another `pip install...`.
+
+
+### Automated release (XXX)
+
+By following the conventional commits specification, we're able to completely automate versioning and releasing to PyPI. This is handled by the `semantic-release.yml` workflow. It is triggered manually by default, but can be configured to run on every push to your main branch.
+
+Here is an overview of its features:
+
+- Check the commit log since the last release, and determine the next version to be released.
+- If no significant change detected, stop here (e.g. just dependencies update).
+- Otherwise, bump the version in code locations specified in `setup.cfg`.
+- Update the `CHANGELOG.md` file.
+- Commit changes.
+- Create a git tag.
+- Push to GitHub.
+- Create a release in GitHub with the changes as release notes.
+- Build the source and binary distribution (wheel).
+- Upload the sources to PyPI and attach them to the Github release.
+
+For more details, check out the [conventional commits website][conventional-commits] and [Python semantic release][python-semantic-release] Github action.
+
+
+### Making a release manually
+
+```bash
+$ semantic-release version --patch
+```
+
+Will make a new release and publish the tag to Github. (and optionally: upload the package to PYPI). 
+
+This process could be automated (in Github actions) but don't do that.
+
+Our automated deployment picks and tries to deploy (to DEV namespace) any new release/tag it finds. You as a developer are the **intelligent agent** responsible for making the decision: is my code ready to be deployed? If the answer is YES, then use `semantic-release` tool version with appropriate tags (`--patch/minor/major`).
+
+And yes: you could publish a release which does not pass all checks and unittests. That is OK, but it is **NOT OK** to do that systematically.
+
+
+### Documentation
+
+Yes, it is not easy...but try your best to write it.
+
+The project assumes that the documentation will be hosted on Read the Docs and written in Markdown with the [MyST Parser][myst].
+
+To enable it, you might need to go [into your dashboard][https://readthedocs.org/dashboard/] and import the project from Github. Everything else should work out of the box.
+
+To generate documentation: `acutter docs`
+
+And easy to publish: TBD
+
+The documentation (when configured) will be automatically re-generated and uploaded to {{cookiecutter.package_name}}.readthedocs.io
 
 
 ## pyproject.toml
@@ -87,6 +164,14 @@ Most of our projects will have this, time tested, structure:
     └── __init__.py
 ```
 
+### README
+
+Basic info about the project, but it signal to the world the state (of maintenance/disrepair). It should point to:
+
+- current status (passing/failing)
+- code coverage
+- documentation
+- who is the main maintainer
 
 
 ### config.py + local_config.py
@@ -99,25 +184,21 @@ As opposed to build tools (which are configured in `pyproject.toml`) we put all 
 Our packages evolved to follow the convention of using `UPPER_CAMEL_CASE`. A value can be overriden by `env` variable but only if it was previously defined in `config.py`.
 
 
-### requirements.txt
-
-This was the old way to specify dependencies. Don't use it anymore. Instead, specify dependencies inside **project.dependencies** or in **optional-dependencies.\[name\]**.
-
-### README
-
-Basic info about the project, but it signal to the world the state (of maintenance/disrepair). It should point to:
-
-- current status (passing/failing)
-- code coverage
-- documentation
-- who is the main maintainer
-
-### \.github/workflows
 
 
-Every project will start with the Github CI configuration. These actions are ran on every pull request.
+### Github Actions (\.github/workflows)
 
-Various actions can be configured, by default we do:
+When you first push to GitHub, it'll start a `ci` GitHub workflow that you can see in the "Actions" tab of your repository. This workflow runs a couple of jobs:
+
+- The `test` job will run your test suite with Pytest against all Python version from 3.7 to 3.9
+- A few things will run in the lint job:
+  - black in check mode
+  - isort in check mode
+  - flake8
+
+A `labels` workflow will also run and synchronise the GitHub labels based on the `.github/labels.toml` file.
+
+Various other actions can be configured, by default we do:
 
 - linting
 - code formatting
@@ -129,6 +210,18 @@ Optionally:
 - pushing release into PYPI
 
 Also note the branch name. Github actions are configured to run against branch `main` (old projects had `master` to be their main branch; if you are updating an old project, you'll want to modify the `ci.yaml`)
+
+
+### Secrets
+
+The workflows need [a few secrets][https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets] to be setup in your GitHub repository:
+
+- `PYPI_TOKEN` to publish releases to [PyPI][pypi]. This one should be created as `release` environment secret.
+- `GH_PAT` a [personal access token (PAT) with the `repo` scope][create-pat] for opening pull requests and updating the repository topics. This is used by the `hacktoberfest` workflow.
+- `CODECOV_TOKEN` to upload coverage data to [codecov.io][codecov] in the Test workflow (optional for public repos).
+
+If you have the GitHub CLI installed and chose to set up GitHub, they will be created with a dummy value.
+
 
 ### hooks
 
@@ -175,44 +268,56 @@ All done! ✨ 🍰 ✨
 flake8...................................................................Passed
 ```
 
-When this happens, fix until you get:
+When this happens, fix until you get all passed:
 
-
-
-
-## Usage
-
-### Installation
-
-Package: `pip install <package>`
-
-Optional dependencies: `pip install <package>.[docs]`
-
-
-### Development
-
-You **should want** to work in local development mode, it is by far the easiest for making changes.
-
-It is **strongly recommended** to use a **virtualenv** (or its cousins):
 
 ```bash
-virtualenv .venv
-source .venv/bin/activate
+git commit -am "feat: refactoring and writing a tutorial"
+Fix End of Files.........................................................Passed
+Debug Statements (Python)................................................Passed
+isort....................................................................Passed
+black....................................................................Passed
+flake8...................................................................Passed
 ```
 
-Installation: `pip install -e .`
 
-This will create symbolic links to the code you are updating; all changes are automatically available.
+But even when then a failure can happen. Checks only examine the files you have changed, sometimes you'll want to use this:
 
-NOTE: Sometimes you have to re-do `pip install -e .` after you have run another `pip install...`.
+```bash
+$ pre-commit run --all-files
+```
+
+## Additional Features (Github)
+
+The project can be set up with github hooks and additional goodies. In order to use that functionality, you'll need to have `gh` installed on the command line:
+
+For linux:
+
+```bash
+$ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/$ null
+$ sudo apt update
+$ sudo apt install gh
+```
+
+And after that, do `gh auth login` and follow instructions to generate/save access token.
 
 
-### Documentation
+### requirements.txt
 
-Yes, it is not easy...but try your best.
+This was the old way to specify dependencies. Don't use it anymore. Instead, specify dependencies inside **project.dependencies** or in **optional-dependencies.\[name\]**.
 
-You can use `sphinx` [documentation style](https://myst-parser.readthedocs.io/en/latest/syntax/syntax.html)
 
-To regenerate: `acutter docs`
 
-The documentation (when configured) will be automatically re-generated and uploaded to {{cookiecutter.package_name}}.readthedocs.io
+
+[black]: https://github.com/psf/black
+[flake8]: https://pypi.org/project/flake8/
+[isort]: https://pypi.org/project/isort/
+[pre-commit]: https://pre-commit.com/
+[conventional-commits]: https://www.conventionalcommits.org
+[python-semantic-release]: https://github.com/relekang/python-semantic-release
+[myst]: https://myst-parser.readthedocs.io
+[pylabels]: https://github.com/hackebrot/labels
+[codecov]: https://codecov.io/
+[pypi]: https://pypi.org/
+[create-pat]: https://github.com/settings/tokens/new?scopes=repo

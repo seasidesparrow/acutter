@@ -1,4 +1,4 @@
-# Welcome to {{ cookiecutter.project_name }} documentation!
+# acutter documentation
 
 <!---
 For help on documentation syntax, see: https://myst-parser.readthedocs.io/en/latest/syntax/syntax.html
@@ -8,7 +8,8 @@ For help on documentation syntax, see: https://myst-parser.readthedocs.io/en/lat
 .. toctree::
    :glob:
 
-   *
+   usage*
+   tutorial*
 ```
 
 ```{include} ../README.md
