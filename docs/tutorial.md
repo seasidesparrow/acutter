@@ -287,7 +287,7 @@ But even when then a failure can happen. Checks only examine the files you have 
 $ pre-commit run --all-files
 ```
 
-## Additional Features (Github)
+### Additional Features (Github)
 
 The project can be set up with github hooks and additional goodies. In order to use that functionality, you'll need to have `gh` installed on the command line:
 
