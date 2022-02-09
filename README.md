@@ -1,8 +1,7 @@
 # Cookiecutter PyPackage
 
-<a href="https://github.com/romanchyla/cookiecutter-pyproject/actions?query=workflow%3ACI">
-  <img src="https://img.shields.io/github/workflow/status/romanchyla/cookiecutter-pyproject/CI/main?label=Test&logo=github&style=flat-square" alt="CI Status" >
-</a>
+![release](https://github.com/romanchyla/acutter/actions/workflows/ci.yml/badge.svg)
+
 <a href="https://github.com/cookiecutter/cookiecutter">
   <img src="https://img.shields.io/badge/cookiecutter-template-D4AA00.svg?style=flat-square&logo=cookiecutter" alt="Cookiecutter template badge">
 </a>

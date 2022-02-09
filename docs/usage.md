@@ -1,0 +1,5 @@
+# Usage
+
+```bash
+$ acutter --help
+```

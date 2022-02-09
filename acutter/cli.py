@@ -2,7 +2,9 @@ import json
 import os
 import pprint
 import shutil
+import subprocess
 import tempfile
+from functools import wraps
 
 import click
 import slugify
@@ -10,9 +12,28 @@ import toml
 from cookiecutter.main import cookiecutter
 
 
+def inprojhome(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if not os.path.exists("./pyproject.toml"):
+            raise Exception(
+                "This command has to be executed in the root directory of a project"
+            )
+        f(*args, **kwargs)
+
+    return wrapper
+
+
 @click.group()
 def cli():
     pass
+
+
+@inprojhome
+@cli.command()
+def docs():
+    """Re-Generate documentation"""
+    subprocess.check_call(["sphinx-build", "docs", ".docs"])
 
 
 @cli.command()
@@ -35,7 +56,7 @@ def provision(folder):
         "(do not worry, original repository will be unchanged"
     )
     # first run cookiecutter
-    templatedir = os.path.dirname(__file__)
+    templatedir = os.path.abspath(os.path.dirname(__file__) + "/..")
     tmpdir = tempfile.mkdtemp()
     context = {
         "initial_commit": "n",
@@ -85,7 +106,7 @@ def update(folder, dry_run):
             "This repo doesnt have pyproject.toml file. Perhaps try 'provision' command?"
         )
 
-    templatedir = os.path.dirname(__file__)
+    templatedir = os.path.abspath(os.path.dirname(__file__) + "/..")
     context = get_project_context(inputfile, templatedir)
     output_dir = os.path.abspath(os.path.join(folder, ".."))
 

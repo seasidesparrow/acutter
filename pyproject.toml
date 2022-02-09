@@ -1,8 +1,22 @@
 [project]
-name = "cookiecutter-pyproject"
+name = "acutter"
 version = "0.1.0"
 description = "Cookie cutter for exploratory projects"
 authors = [{ name = "Roman Chyla", email = "roman.chyla@gmail.com" }]
+license = { text = "MIT" }
+readme = "README.md"
+repository = "https://github.com/romanchyla/acutter"
+documentation = "https://acutter.readthedocs.io"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries",
+]
+packages = [
+    "acutter",
+]
 
 dependencies = [
     'cookiecutter>=1.7.3',
@@ -27,6 +41,12 @@ dev = [
     'pytest-cookies==0.6.1',
     'ppsetuptools==2.0.2'
 ]
+docs = [
+    'Sphinx==4.3.1',
+    'myst-parser==0.15.2',
+    'sphinx-rtd-theme==1.0.0'
+]
+
 
 [tool.isort]
 profile = "black"
@@ -44,8 +64,9 @@ build-backend = "flit_core.buildapi"
 # see setup.py for explanation of these
 [xsetup.entry_points]
 console_scripts = [
-    "rtool=rtool:cli"
+    "acutter=acutter.cli:cli"
 ]
+
 [xsetup]
 scripts = [
 ]
