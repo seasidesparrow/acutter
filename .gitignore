@@ -131,3 +131,6 @@ dmypy.json
 # File normally ignored that we want to commit
 !{{cookiecutter.project_slug}}/.idea/
 .docs/
+
+**/.DS_Store
+*.idea
