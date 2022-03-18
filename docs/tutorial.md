@@ -9,14 +9,13 @@ This document will list things that are important for developers.
 
 ### Installation
 
-Package: `pip install <package>`
+#### acutter
+Eventually, `acutter` will be up on PyPI so you can install via pip, but it's not there yet. To install right now:
 
-Optional dependencies: `pip install <package>.[docs]`
-
-
-### Development
-
-You **should want** to work in local development mode, it is by far the easiest for making changes.
+```
+git clone https://github.com/romanchyla/acutter
+cd acutter/
+```
 
 It is **strongly recommended** to use a **virtualenv** (or its cousins):
 
@@ -25,11 +24,24 @@ virtualenv .venv
 source .venv/bin/activate
 ```
 
-Installation: `pip install -e .`
+Then to install `acutter` in this virtualenv:
+
+`pip install -e .`
 
 This will create symbolic links to the code you are updating; all changes are automatically available.
 
 NOTE: Sometimes you have to re-do `pip install -e .` after you have run another `pip install...`.
+
+Install `acutter` dependencies: `pip install .`
+
+Install optional dependencies (e.g. `[docs]`, `[dev]`, etc.): `pip install .[docs]`
+
+#### As a dependency
+Since `acutter` is not yet on PyPI, first install `acutter` locally, as above, then from **within the project you'll be calling `acutter` from**:
+
+`pip install -e /path/to/acutter`
+
+to use `acutter` within the other project.
 
 
 ### Automated release (XXX)
@@ -51,6 +63,28 @@ Here is an overview of its features:
 
 For more details, check out the [conventional commits website][conventional-commits] and [Python semantic release][python-semantic-release] Github action.
 
+#### A note about commit messages
+The template requires you follow the [Conventional Commits](https://www.conventionalcommits.org/) standard. See the link for more details, but roughly, the commit message should be structured as follows (the following is copied directly from the link above):
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+`<type>`: options include `fix:`, `feat:`, `build:`, `chore:`, `ci:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`, and more
+
+`<description>`: your usual commit message, a summary of the code changes. Note that the message should **not** be in sentence case (e.g. the first letter should **not** be capitalized)
+
+Optional:
+
+`scope`: section of the codebase affected
+
+`body`: more context about the commit; it must separated from the description by a single blank line and can consist of multiple newline-separated paragraphs
+
+`footer`: a word token (such as `BREAKING CHANGE`) followed by a separator (`:<space>` or `<space>#`), followed by a string value
 
 ### Making a release manually
 
@@ -75,7 +109,7 @@ The project assumes that the documentation will be hosted on Read the Docs and w
 
 To enable it, you might need to go [into your dashboard][https://readthedocs.org/dashboard/] and import the project from Github. Everything else should work out of the box.
 
-To generate documentation: `acutter docs`
+To generate documentation, install `acutter` as a dependency within the virtualenv of your library (see **As a dependency** in the **Installaion** section above), then: `acutter docs`
 
 And easy to publish: TBD
 
