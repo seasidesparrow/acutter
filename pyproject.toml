@@ -57,7 +57,7 @@ addopts = "-v -Wdefault"
 testpaths = "tests/"
 
 [build-system]
-requires = ["setuptools >= 58.6.0", "wheel", "flit_core >=3.2,<4", "ppsetuptools==2.0.2"]
+requires = ["setuptools == 60.10.0", "wheel", "flit_core >=3.2,<4", "ppsetuptools==2.0.2"]
 build-backend = "flit_core.buildapi"
 #build-backend = "setuptools.build_meta"
 
