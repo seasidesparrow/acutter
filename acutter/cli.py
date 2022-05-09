@@ -37,6 +37,36 @@ def docs():
 
 
 @cli.command()
+@click.argument("folder", type=click.Path())
+@click.option("--force", default=False, help="force creation even if the folder exists")
+def create(folder, force):
+    """
+    Create a new project inside a new folder (project name will be the basedir)
+    """
+    if os.path.exists(folder):
+        if not force:
+            raise Exception("The {} already exists".format(folder))
+
+    templatedir = os.path.abspath(os.path.dirname(__file__) + "/..")
+    outdir = os.path.dirname(os.path.abspath(folder))
+    context = {
+        "initial_commit": "y",
+        "setup_github": "n",
+        "setup_pre_commit": "y",
+        "private_or_public": "public",
+        "run_virtualenv_install": "y",
+        "project_name": os.path.basename(folder),
+    }
+    cookiecutter(
+        templatedir,
+        no_input=False,
+        extra_context=context,
+        overwrite_if_exists=force,
+        output_dir=outdir,
+    )
+
+
+@cli.command()
 @click.argument("folder", type=click.Path(exists=True))
 def provision(folder):
     """

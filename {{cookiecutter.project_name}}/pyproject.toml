@@ -1,5 +1,5 @@
 [project]
-name = "{{cookiecutter.project_slug}}"
+name = "{{cookiecutter.package_name}}"
 version = "{{ cookiecutter.version }}"
 description = "{{ cookiecutter.project_short_description }}"
 authors = [{ name = "{{ cookiecutter.full_name }}", email = "{{ cookiecutter.email }}"}]
@@ -78,7 +78,7 @@ known_first_party = ["{{ cookiecutter.package_name }}", "tests"]
 line-length = 99 # override black's default line-length
 
 [build-system]
-requires = ["setuptools >= 58.6.0", "wheel", "flit_core >=3.2,<4", "ppsetuptools==2.0.2"]
+requires = ["setuptools==60.10.0", "wheel", "flit_core >=3.2,<4", "ppsetuptools==2.0.2"]
 build-backend = "flit_core.buildapi"
 #build-backend = "setuptools.build_meta"
 

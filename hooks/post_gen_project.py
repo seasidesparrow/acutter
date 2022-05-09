@@ -28,9 +28,22 @@ def install_virtualenv():
 
     run_cmd(["virtualenv", ".venv"])
 
-    run_pip(["install", "--upgrade", "pip", "setuptools"])
     run_pip(["install", "-e", ".[dev]"])
     run_pip(["install", ".[docs]"])
+
+    print(
+        """Virtualenv created inside {folder}/.venv
+    
+    In case of problems, you can run (manually):
+
+    cd {folder}
+    source .venv/bin/activate
+    pip install -e .[dev]
+    pip install .[docs]
+    """.format(
+            folder=os.path.abspath(".")
+        )
+    )
 
 
 def initial_commit():

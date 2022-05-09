@@ -1,7 +1,10 @@
 {
   "full_name": "Roman Chyla",
   "email": "roman.chyla@gmail.com",
-  "github_username": "romanchyla",
+  "github_username": [
+    "adsabs",
+    "romanchyla"
+  ],
   "project_name": "",
   "private_or_public": [
     "public",
