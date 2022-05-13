@@ -1,10 +1,10 @@
 import click
 
 try:
-    import rutils
+    import lvtn1_utils as utils
 
-    config = rutils.load_config()
-    logger = rutils.setup_logging("{{cookiecutter.package_name}}.cli")
+    config = utils.load_config()
+    logger = utils.setup_logging("{{cookiecutter.package_name}}.cli")
 except ImportError:
     import logging
 
