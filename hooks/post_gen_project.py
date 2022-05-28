@@ -33,7 +33,7 @@ def install_virtualenv():
 
     print(
         """Virtualenv created inside {folder}/.venv
-    
+
     In case of problems, you can run (manually):
 
     cd {folder}

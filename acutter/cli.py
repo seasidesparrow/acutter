@@ -4,12 +4,15 @@ import pprint
 import shutil
 import subprocess
 import tempfile
+from collections import OrderedDict
 from functools import wraps
 
 import click
+import pkg_resources
 import slugify
 import toml
 from cookiecutter.main import cookiecutter
+from toml import TomlArraySeparatorEncoder, TomlEncoder
 
 
 def inprojhome(f):
@@ -150,6 +153,7 @@ def update(folder, dry_run):
         context["project_name"] = basename
 
     if not dry_run:
+        oldtoml = toml.load(inputfile, _dict=OrderedDict)
         cookiecutter(
             templatedir,
             no_input=True,
@@ -157,6 +161,7 @@ def update(folder, dry_run):
             overwrite_if_exists=True,
             output_dir=output_dir,
         )
+        merge_old_new(oldtoml, inputfile)
     else:
         print("Would have called cookiecutter with:")
         pprint.pprint(
@@ -168,6 +173,66 @@ def update(folder, dry_run):
                 output_dir=output_dir,
             )
         )
+
+
+def merge_old_new(oldtoml, inputfile):
+    """
+    Newly generated toml has overwritten things that we want to preserve
+    (such as dependencies); in this function we try to put back the old
+    and keep the new
+    """
+
+    updated = 0
+    newtoml = toml.load(inputfile, _dict=OrderedDict)
+    for getter in (
+        lambda x: x["project"]["dependencies"],
+        lambda x: x["project"]["optional-dependencies"]["dev"],
+        lambda x: x["project"]["optional-dependencies"]["docs"],
+    ):
+        try:
+            old = list(pkg_resources.parse_requirements(getter(oldtoml)))
+            new = list(pkg_resources.parse_requirements(getter(newtoml)))
+
+            newkeys = set([x.name for x in new])
+            oldkeys = set([x.name for x in old])
+
+            # if a package is present in the template but missing from the
+            # 'old' pyproject.toml we assume it was removed by a developer
+            to_keep = []
+            for dep in new:
+                if dep.name in oldkeys:
+                    to_keep.append(str(dep))
+
+            if len(to_keep) != len(new):
+                getter(newtoml).clear()
+                getter(newtoml).extend(to_keep)
+                updated += len(to_keep)
+
+            for dep in old:
+                if dep.name not in newkeys:
+                    getter(newtoml).append(str(dep))
+                    updated += 1
+        except KeyError:
+            pass
+
+    # keep values from the original
+    for getter in (
+        lambda x: x["xsetup"]["entry_points"]["console_scripts"],
+        lambda x: x["xsetup"]["console_scripts"],
+    ):
+        try:
+            old = getter(oldtoml)
+            new = getter(newtoml)
+            if str(old) != str(new):
+                new.clear()
+                new.extend(old)
+        except KeyError:
+            pass
+
+    # only if changed, to preserve potential comments otherwise
+    if updated > 0:
+        with open(inputfile, "w") as fo:
+            fo.write(dumps(newtoml, CustomEncoder()))
 
 
 def get_project_context(inputfile, templatedir, template="cookiecutter.json"):
@@ -228,6 +293,78 @@ def get_project_context(inputfile, templatedir, template="cookiecutter.json"):
     pprint.pprint(out)
     print("-" * 80)
     return out
+
+
+class CustomEncoder(TomlArraySeparatorEncoder):
+    def __init__(self, _dict=OrderedDict, preserve=True, separator=",\n"):
+        super(CustomEncoder, self).__init__(_dict, preserve)
+        if separator.strip() == "":
+            separator = "," + separator
+        elif separator.strip(" \t\n\r,"):
+            raise ValueError("Invalid separator for arrays")
+        self.separator = separator
+
+    def dump_list(self, v):
+        t = []
+        retval = "[\n"
+        for u in v:
+            t.append(self.dump_value(u))
+        while t != []:
+            s = []
+            for u in t:
+                if isinstance(u, list):
+                    for r in u:
+                        s.append(r)
+                else:
+                    retval += "    " + str(u) + self.separator
+            t = s
+        retval += "]\n"
+        return retval
+
+
+def dumps(o, encoder=None, prefix=""):
+    """Modified version of toml.dumps()
+    https://github.com/uiri/toml/blob/59d83d0d51a976f11a74991fa7d220fc630d8bae/toml/encoder.py#L34
+
+    In here we dump the sections in order; the original logic of the toml.dumps()
+    is rather convoluted - instead of recursively build the sections, from bottom up,
+    it collects sections and those that are new, are processed last. Our version
+    may not be the best either - but we'll dump sections on the first encounter
+    """
+
+    retval = ""
+    if encoder is None:
+        encoder = TomlEncoder(o.__class__)
+    addtoretval, sections = encoder.dump_sections(o, "")
+    if prefix and addtoretval:
+        retval += "[{}]\n{}".format(prefix, addtoretval)
+    else:
+        retval += addtoretval
+    outer_objs = [id(o)]
+
+    section_ids = [id(section) for section in sections.values()]
+    for outer_obj in outer_objs:
+        if outer_obj in section_ids:
+            raise ValueError("Circular reference detected")
+    outer_objs += section_ids
+
+    for section in sections:
+        addtoretval, addtosections = encoder.dump_sections(sections[section], section)
+
+        if addtoretval or (not addtoretval and not addtosections):
+            if retval and retval[-2:] != "\n\n":
+                retval += "\n"
+            retval += "[" + (prefix and prefix + "." or "") + section + "]\n"
+            if addtoretval:
+                retval += addtoretval
+        for s in addtosections:
+            if prefix:
+                p = prefix + "." + section + "." + s
+            else:
+                p = section + "." + s
+            retval += dumps(addtosections[s], encoder=encoder, prefix=p)
+
+    return retval
 
 
 if __name__ == "__main__":

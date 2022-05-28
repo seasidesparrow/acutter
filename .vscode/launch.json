@@ -11,7 +11,10 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "args": [],
+            "args": [
+                "update",
+                "/dvt/workspace/lvtn1-utils"
+            ],
             "env": {
                 "GEVENT_SUPPORT": "False"
             },
