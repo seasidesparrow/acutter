@@ -45,7 +45,6 @@ dev = [
     'mock==4.0.3',
     'coverage==6.2',
     'pytest-cov==3.0.0',
-    'pytest-cookies==0.6.1',
     'semantic-release==0.1.0',
 ]
 docs = [

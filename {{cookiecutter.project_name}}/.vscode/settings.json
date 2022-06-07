@@ -9,7 +9,7 @@
     }
   },
   "terminal.integrated.env.linux": {
-    "PYTHONPATH": ".:tests"
+    "PYTHONPATH": ".${pathSeparator}tests${pathSeparator}${workspaceFolder}${pathSeparator}${env:PYTHONPATH}"
   },
   "python.analysis.extraPaths": [],
   "python.defaultInterpreterPath": ".venv/bin/python"
