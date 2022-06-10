@@ -14,6 +14,21 @@ import toml
 from cookiecutter.main import cookiecutter
 from toml import TomlArraySeparatorEncoder, TomlEncoder
 
+TEMPLATEDIR = os.path.join(
+    os.path.abspath(os.path.dirname(__file__) + "/.."), "templates"
+)
+
+
+def get_templatedir(template):
+    templatedir = os.path.join(TEMPLATEDIR, template)
+    if not os.path.exists(templatedir):
+        raise Exception(
+            "Cookiecutter template={} not found inside templatedir={}".format(
+                template, templatedir
+            )
+        )
+    return templatedir
+
 
 def inprojhome(f):
     @wraps(f)
@@ -42,15 +57,16 @@ def docs():
 @cli.command()
 @click.argument("folder", type=click.Path())
 @click.option("--force", default=False, help="force creation even if the folder exists")
-def create(folder, force):
+@click.option("--template", default="python_package", help="Project template to use")
+def create(folder, force, template):
     """
     Create a new project inside a new folder (project name will be the basedir)
     """
+
     if os.path.exists(folder):
         if not force:
             raise Exception("The {} already exists".format(folder))
 
-    templatedir = os.path.abspath(os.path.dirname(__file__) + "/..")
     outdir = os.path.dirname(os.path.abspath(folder))
     context = {
         "initial_commit": "y",
@@ -61,7 +77,7 @@ def create(folder, force):
         "project_name": os.path.basename(folder),
     }
     cookiecutter(
-        templatedir,
+        get_templatedir(template),
         no_input=False,
         extra_context=context,
         overwrite_if_exists=force,
@@ -71,7 +87,8 @@ def create(folder, force):
 
 @cli.command()
 @click.argument("folder", type=click.Path(exists=True))
-def provision(folder):
+@click.option("--template", default="python_package", help="Project template to use")
+def provision(folder, template):
     """
     Generate pyproject.toml for a repository which doesn't have it.
     After this command was successful; you can run 'update'
@@ -89,7 +106,7 @@ def provision(folder):
         "(do not worry, original repository will be unchanged"
     )
     # first run cookiecutter
-    templatedir = os.path.abspath(os.path.dirname(__file__) + "/..")
+    templatedir = get_templatedir(template)
     tmpdir = tempfile.mkdtemp()
     context = {
         "initial_commit": "n",
@@ -121,7 +138,14 @@ def provision(folder):
 @cli.command()
 @click.argument("folder", type=click.Path(exists=True))
 @click.option("--dry-run", default=False)
-def update(folder, dry_run):
+@click.option("--template", default="", help="Project template to use")
+@click.option(
+    "--force",
+    default=False,
+    is_flag=True,
+    help="Force update based on a different template",
+)
+def update(folder, dry_run, template, force):
     """Update repository which contains pyproject.toml
 
     When given path pointing to a repository (that was previously) created
@@ -136,10 +160,32 @@ def update(folder, dry_run):
     inputfile = os.path.join(folder, "pyproject.toml")
     if not os.path.exists(inputfile):
         raise Exception(
-            "This repo doesnt have pyproject.toml file. Perhaps try 'provision' command?"
+            "This repo doesnt have pyproject.toml file. Perhaps try to run 'provision' command first?"
         )
 
-    templatedir = os.path.abspath(os.path.dirname(__file__) + "/..")
+    # find out on what template this project has been based
+    tomldata = toml.load(inputfile)
+    try:
+        ptemplate = tomldata["tool"]["acutter"]["template"]
+    except KeyError:
+        ptemplate = template
+
+    if ptemplate == "":
+        raise Exception(
+            "Please tell me what template to base this project on. tool.acutter doesn't contain that info"
+        )
+
+    if ptemplate != template:
+        if force:
+            ptemplate = template
+        else:
+            raise Exception(
+                "The project template differs from your argument; use --force to override. project={}, passed={}".format(
+                    ptemplate, template
+                )
+            )
+
+    templatedir = get_templatedir(ptemplate)
     context = get_project_context(inputfile, templatedir)
     output_dir = os.path.abspath(os.path.join(folder, ".."))
 
