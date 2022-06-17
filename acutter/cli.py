@@ -138,7 +138,7 @@ def provision(folder, template):
 @cli.command()
 @click.argument("folder", type=click.Path(exists=True))
 @click.option("--dry-run", default=False)
-@click.option("--template", default="", help="Project template to use")
+@click.option("--template", default="python_package", help="Project template to use")
 @click.option(
     "--force",
     default=False,
@@ -157,11 +157,7 @@ def update(folder, dry_run, template, force):
 
     """
 
-    inputfile = os.path.join(folder, "pyproject.toml")
-    if not os.path.exists(inputfile):
-        raise Exception(
-            "This repo doesnt have pyproject.toml file. Perhaps try to run 'provision' command first?"
-        )
+    inputfile = check_pyproject(folder)
 
     # find out on what template this project has been based
     tomldata = toml.load(inputfile)
@@ -219,6 +215,103 @@ def update(folder, dry_run, template, force):
                 output_dir=output_dir,
             )
         )
+
+
+@cli.command()
+@click.argument("folder", type=click.Path(exists=True))
+@click.option(
+    "--force",
+    default=False,
+    is_flag=True,
+    help="Will continue even if .env is detected",
+)
+def setup_virtualenv(folder, force):
+    """
+    Helper function you can call to setup python virtualenv for the project
+    It will do the following:
+
+        - create virtualenv inside <project>/.venv
+        - install project dependencies (incl .[dev] and .[docs])
+        - install pre-commit hooks
+    """
+
+    check_pyproject(folder)
+    venv = os.path.join(os.path.abspath(folder), ".venv")
+    if os.path.exists(venv) and not force:
+        raise Exception("{} already exists, use --force to continue".format(venv))
+    install_virtualenv(folder)
+    setup_pre_commit(folder)
+
+
+# -------------------------------------------------------------------------
+
+
+def run_cmd(args, **kwargs):
+    return subprocess.run(args, check=True, **kwargs)
+
+
+def run_pip(args, cwd=None):
+    cmd = [".venv/bin/python", "-m", "pip"]
+    cmd += args
+    run_cmd(cmd, cwd=cwd)
+
+
+def check_command_exists(cmd, cwd=None):
+    try:
+        run_cmd([cmd, "-h"], capture_output=True, cwd=cwd)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        print(f"{cmd} command is not installed")
+        return False
+    return True
+
+
+def install_virtualenv(cwd):
+    if not check_command_exists("virtualenv"):
+        return
+
+    run_cmd(["virtualenv", ".venv"], cwd=cwd)
+    run_pip(["install", ".[dev]"], cwd=cwd)
+    run_pip(["install", ".[docs]"], cwd=cwd)
+    run_pip(["install", "-e", "."], cwd=cwd)  # should be last to get proper scripts
+
+    print(
+        """Virtualenv created inside {folder}/.venv
+
+    In case of problems, you can run (manually):
+
+    cd {folder}
+    source .venv/bin/activate
+    pip install .
+    pip install -e .[dev]
+    pip install .[docs]
+    """.format(
+            folder=os.path.abspath(cwd)
+        )
+    )
+
+
+def setup_pre_commit(cwd):
+    if check_command_exists(".venv/bin/pre-commit", cwd=cwd):
+        # Run pre-commit install
+        run_cmd([".venv/bin/pre-commit", "install"])
+        run_cmd([".venv/bin/pre-commit", "install", "--hook-type", "commit-msg"])
+
+    elif check_command_exists("pre-commit", cwd=cwd):
+        # Run pre-commit install
+        run_cmd(["pre-commit", "install"])
+        run_cmd(["pre-commit", "install", "--hook-type", "commit-msg"])
+
+
+def check_pyproject(folder):
+    inputfile = os.path.join(folder, "pyproject.toml")
+    if not os.path.exists(inputfile):
+        raise Exception(
+            "This repo doesnt have pyproject.toml file. Perhaps try to run 'provision' command first?"
+        )
+    return inputfile
+
+
+# ---------------------------------------------------------------------------------
 
 
 def merge_old_new(oldtoml, inputfile):

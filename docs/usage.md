@@ -1,25 +1,33 @@
 # Usage
 
-```bash
-$ acutter --help
+
+## Installation
+
+
+```
+$ git clone https://github.com/adsabs/acutter
+$ cd acutter
+$ virtualenv .venv
+$ source .venv/bin/activate
+$ pip install -e .
 ```
 
+Afterwards, you will have `acutter` command available. Verify with:
+
+```shell
+
+acutter --help
+```
 
 ## Creating a New Project
 
 This will generate a new project:
 
 ```shell
-$ cookiecutter https://github.com/romanchyla/acutter
+$ acutter create /path/to/new/project --template python_package
 ```
 
-Or using local repository (recommended):
-
-```
-$ git clone https://github.com/romanchyla/acutter
-$ cd acutter
-$ cookiecutter . -o /some/path
-```
+The project templates can be found inside `acutter/templates`.
 
 A new python project based on the template from the current folder will be written into `/some/path/<project-name>`.
 
@@ -53,3 +61,16 @@ If you want to convert a project/library which wasn't created from the template,
 1. check out cookiecutter and your library into a local filesystem (see **Installation** on the tutorial page)
 1. call `acutter provision /path/to/library` and answer the questions. This will create the config file `pyproject.toml` but will leave your existing code otherwise unchanged.
 1. follow steps above for **Updating Existing Projects** to convert the library to the template format.
+
+
+
+## Utility: Setup Virtualenv
+
+If there is any change in the project tooling (i.e. tests, pre-commit hooks, git hooks) you may need to update your virtualenv. To make it easier, on Linux, you can run the following (**after you have updated the project**).
+
+```shell
+
+acutter setup-virtualenv /path/to/project
+```
+
+If `.venv` exists, you can pass `--force`. 
