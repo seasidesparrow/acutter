@@ -13,7 +13,7 @@ This document will list things that are important for developers.
 Eventually, `acutter` will be up on PyPI so you can install via pip, but it's not there yet. To install right now:
 
 ```
-git clone https://github.com/romanchyla/acutter
+git clone https://github.com/adsabs/acutter
 cd acutter/
 ```
 

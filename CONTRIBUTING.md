@@ -4,11 +4,11 @@ Contributions are welcome, and they are greatly appreciated! Every little bit he
 
 **Report bugs**
 
-Bugs should be reported [on Github](https://github.com/romanchyla/cookiecutter-pyproject/issues). Please try to include the options used to generate the project as well as OS and Python version.
+Bugs should be reported [on Github](https://github.com/adsabs/acutter/issues). Please try to include the options used to generate the project as well as OS and Python version.
 
 **Writing code**
 
-Look through the [GitHub issues](https://github.com/romanchyla/cookiecutter-pyproject/issues) for bugs or feature request. You may work on anything that you find of interest, provided there is no pull request attached to it.
+Look through the [GitHub issues](https://github.com/adsabs/acutter/issues) for bugs or feature request. You may work on anything that you find of interest, provided there is no pull request attached to it.
 
 **Write documentation**
 
